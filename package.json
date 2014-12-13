@@ -1,0 +1,21 @@
+{
+  "name": "ptt",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Po-Ying Chen <poying.me@gmail.com> (陳柏穎)",
+  "license": "MIT",
+  "dependencies": {
+    "ansi-regex": "^1.1.0",
+    "co": "^4.0.1",
+    "co-wait": "0.0.0",
+    "debug": "^2.1.0",
+    "deep-freeze": "0.0.1",
+    "extend.js": "0.0.2",
+    "iconv-lite": "^0.4.5",
+    "terminal.js": "git://github.com/Gottox/terminal.js#786776c"
+  }
+}
