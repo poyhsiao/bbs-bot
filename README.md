@@ -19,6 +19,10 @@ Telnet 是一個 server、client 之間不斷的來回溝通，所在規劃的�
 
 這部份幸好有人幫忙寫了（[terminal.js](https://github.com/Gottox/terminal.js)），`bbs-bot` 將過濾掉 `Command`、`Option` 的內容直接傳給 `terminal.js`，讓他來幫我們繪製畫面。
 
+#### States
+
+我們的 `bot` 在任何時間點上必定處於某個 `state`，程式啟動時會在 `'boot'` `state` 上，當 `state` 是 `'pause'` 時代表 `bot` 目前閒置，可以接受使用者指令，使用者指令也是指定 `bot` 到某個 `state`。
+
 #### 異步、等待的處理方式
 
 等待這件事使用 Generators 非常適合（coroutine），他讓我們程式碼比較容易閱讀，`bbs-bot` 使用 `co` 處理異步動作，用 `EventEmitter` 讓程式在多個 `co` 中互動。
