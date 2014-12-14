@@ -1,9 +1,9 @@
 bbs-bot
 =======
 
-> 專案還沒完成
-
 寫給 PTT 的機器人，修改 `states` 後可適用於其他 BBS 站台
+
+![demo](./demo.gif)
 
 ### 基本想法
 
