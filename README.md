@@ -7,6 +7,8 @@ bbs-bot
 
 ### 作法
 
+#### 基本想法
+
 Telnet 是一個 server、client 之間不斷的來回溝通，所在規劃的時候發現我我們在程式中最常作的事情就是__等待__，等待某件事情發生後我們要給適當的回應。bot 跟我們操控者之間又是一個來回等待的過程，等待 bot 有空閒後我們才能給他下一個指令。
 
 #### Telnet Commands/Options
@@ -21,7 +23,15 @@ Telnet 是一個 server、client 之間不斷的來回溝通，所在規劃的�
 
 等待這件事使用 Generators 非常適合（coroutine），他讓我們程式碼比較容易閱讀，`bbs-bot` 使用 `co` 處理異步動作，用 `EventEmitter` 讓程式在多個 `co` 中互動。
 
-#### 實際狀況
+#### 程式碼簡易說明
+
+整個程式分成三個部分，`Bot`、`Client`、`Screen`。
+
+* `Screen`：包裝 `terminal.js`，加入一些功能方便 `Client` 操作
+* `Client`：建立 Telnet 連線，解析 `Command`、`Option`，繪製 `Screen`
+* `Bot`：包裝 `Client`，是 `Client` 跟主程式之間溝通的橋樑
+
+#### 實際使用情形
 
 1. 操作者將指令丟給 MQ
 2. Consumer 等待 `bbs-bot`
