@@ -14,9 +14,9 @@ module.exports = function *() {
     // 返回前一頁
     this.left();
 
-    // 等待指令，應該要有指令的，不確定
+    // 等待更多資料
     let key = yield this.wait({
-      cmds: this.waitForCommands(['WILL', 'DO', 'GA', 'SE']),
+      cmds: this.waitForMoreData(),
       timeout: wait(2000)
     });
 
@@ -25,6 +25,8 @@ module.exports = function *() {
       this.state('boot');
       return;
     }
+
+    yield wait(500);
   }
 
   this.state('main');

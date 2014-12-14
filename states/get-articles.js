@@ -1,12 +1,12 @@
 'use strict';
 
 var wait = require('co-wait');
-var ansiRe = require('ansi-regex')();
+var ansiRegex = require('ansi-regex')();
 var debug = require('debug')('states:get-articles');
 
 var anyKeyRe = /請按任意鍵繼續/;
 var boardRe = /看板《.*?》/;
-var articleRe = /^(\S)?\s+(\d+)\s+(.*?)(\d{2}\/\d{2})\s+(\w+)\s+(\S+)\s+(.*)$/m;
+var articleRe = /^\s*(\S)\s+(\d+)\s+(.*?)(\d{2}\/\d{2})\s+(\w+)\s+(\S+)\s+(.*)$/m;
 var deletedRe = /\(已被\w+刪除\)/;
 
 module.exports = function *() {
@@ -23,27 +23,31 @@ module.exports = function *() {
   yield this.waitForMoreData();
   var screen = this.read();
 
-  // 任意鍵
-  if (anyKeyRe.test(screen)) {
+  if (!anyKeyRe.test(screen)) {
+    debug('等待歡迎畫面');
+    let stop = false;
+    while (!stop) {
+      stop = yield this.waitForData(anyKeyRe);
+    }
+  }
+
+  {
     debug('歡迎畫面');
-    screen = '';
     this.writeLine('');
 
     // 需要 timeout 嗎？不確定
     let stop = false;
-    while (stop) {
+    while (!stop) {
       stop = yield this.waitForData(boardRe);
     }
   }
 
   // 文章列表
-  while (1) {
+  articles: while (1) {
     // 等待
     yield wait(1000);
-    screen = this.read();
+    screen = this.read().replace(ansiRegex, '');
 
-    debug('列表換頁');
-    screen = screen.replace(ansiRe, '');
     yield article.call(this, screen);
     this.up();
     yield this.waitForMoreData();
@@ -52,7 +56,7 @@ module.exports = function *() {
     if (!boardRe.test(screen)) {
       debug('悲劇，不知道位什麼跳出列表頁了');
       this.state('boot');
-      return;
+      break articles;
     }
   }
 
