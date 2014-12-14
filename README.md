@@ -5,29 +5,27 @@ bbs-bot
 
 ![demo](./demo.gif)
 
-### 作法
-
-#### 基本想法
+### 基本想法
 
 Telnet 是一個 server、client 之間不斷的來回溝通，所在規劃的時候發現我我們在程式中最常作的事情就是__等待__，等待某件事情發生後我們要給適當的回應。bot 跟我們操控者之間又是一個來回等待的過程，等待 bot 有空閒後我們才能給他下一個指令。
 
-#### Telnet Commands/Options
+### Telnet Commands/Options
 
 我們寫爬蟲其實不太需要知道 `Command`、`Option` 的實際內容，對於判斷頁面好像幫助不大，頂多 Debug 的時候看看我們到底接到了什麼 `Command`、`Option`，所以 `bbs-bot` 只解析出名稱而已，其他內容直接過濾掉（`SB`、`SE` 之間的內容）。
 
-#### Ansi 畫面
+### Ansi 畫面
 
 這部份幸好有人幫忙寫了（[terminal.js](https://github.com/Gottox/terminal.js)），`bbs-bot` 將過濾掉 `Command`、`Option` 的內容直接傳給 `terminal.js`，讓他來幫我們繪製畫面。
 
-#### States
+### States
 
 我們的 `bot` 在任何時間點上必定處於某個 `state`，程式啟動時會在 `'boot'` `state` 上，當 `state` 是 `'pause'` 時代表 `bot` 目前閒置，可以接受使用者指令，使用者指令也是指定 `bot` 到某個 `state`。
 
-#### 異步、等待的處理方式
+### 異步、等待的處理方式
 
 等待這件事使用 Generators 非常適合（coroutine），他讓我們程式碼比較容易閱讀，`bbs-bot` 使用 `co` 處理異步動作，用 `EventEmitter` 讓程式在多個 `co` 中互動。
 
-#### 程式碼簡易說明
+### 程式碼簡易說明
 
 整個程式分成三個部分，`Bot`、`Client`、`Screen`。
 
@@ -35,7 +33,7 @@ Telnet 是一個 server、client 之間不斷的來回溝通，所在規劃的�
 * `Client`：建立 Telnet 連線，解析 `Command`、`Option`，繪製 `Screen`
 * `Bot`：包裝 `Client`，是 `Client` 跟主程式之間溝通的橋樑
 
-#### 實際使用情形
+### 實際使用情形
 
 1. 操作者將指令丟給 MQ
 2. Consumer 等待 `bbs-bot`
@@ -46,7 +44,7 @@ Telnet 是一個 server、client 之間不斷的來回溝通，所在規劃的�
 
 ![design](./design.png)
 
-### License
+## License
 
 The MIT License (MIT)
 
